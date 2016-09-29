@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link type="text/css" href="css/mycss.css" rel="stylesheet">
+    <!-- polyfill -->
+    <script src="inc/shim/Base64.js" type="text/javascript"></script>
+    <script src="inc/shim/Base64binary.js" type="text/javascript"></script>
+    <script src="inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+    <script src="inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
+    <!-- jasmid package -->
+    <script src="inc/jasmid/stream.js"></script>
+    <script src="inc/jasmid/midifile.js"></script>
+    <script src="inc/jasmid/replayer.js"></script>
+    <!-- midi.js package -->
+    <script src="js/midi/audioDetect.js" type="text/javascript"></script>
+    <script src="js/midi/gm.js" type="text/javascript"></script>
+    <script src="js/midi/loader.js" type="text/javascript"></script>
+    <script src="js/midi/plugin.audiotag.js" type="text/javascript"></script>
+    <script src="js/midi/plugin.webaudio.js" type="text/javascript"></script>
+    <script src="js/midi/plugin.webmidi.js" type="text/javascript"></script>
+    <script src="js/midi/player.js" type="text/javascript"></script>
+    <script src="js/midi/synesthesia.js" type="text/javascript"></script>
+    <!-- utils -->
+    <script src="js/util/dom_request_xhr.js" type="text/javascript"></script>
+    <script src="js/util/dom_request_script.js" type="text/javascript"></script>
+    <!-- includes -->
+    <script src="inc/timer.js" type="text/javascript"></script>
+    <script src="inc/colorspace.js" type="text/javascript"></script>
+    <script src="inc/event.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.js"></script>
+</head>
+<body style="margin: 0px; background: black;">
+    <div id="click" style="display: none; position: fixed; width: 100%; height: 100%; color: white; text-align: center;">
+        <br><br><br>
+        <h3 ><span style="background: black;">Click/Tap Anywhere to Ring Bell!</span></h3>
+    </div>
+    <script>
+    window.onload = function () {
+
+        var randomIntFromInterval = function(min,max) {
+            return Math.floor(Math.random()*(max-min+1)+min);
+        }
+
+        var colorMap = {
+            1: 'red',
+            2: 'orange',
+            3: 'yellow',
+            4: 'green',
+            5: 'cyan',
+            6: 'blue',
+            7: 'violet'
+        };
+
+        var noteMap = {
+            1: 60,
+            2: 62,
+            3: 64,
+            4: 65,
+            5: 67,
+            6: 69,
+            7: 71,
+        };
+
+        var delay = 0; // play one note every quarter second
+        var velocity = 127; // how hard the note hits
+
+        MIDI.loadPlugin({
+            soundfontUrl: "./soundfont/",
+            instrument: "acoustic_grand_piano",
+            onprogress: function(state, progress) {
+                console.log(state, progress);
+            },
+            onsuccess: function() {
+                $('#click').show();
+                var randNum = randomIntFromInterval(1, 7);
+                var color = colorMap[randNum];
+                $('#click').css('background-color', color);
+                MIDI.setVolume(0, 127);
+
+                $("#click").click(function(){
+                    MIDI.noteOn(0, noteMap[randNum], velocity, delay);
+                    MIDI.noteOff(0, noteMap[randNum], delay + 0.75);
+                });
+
+            }
+        });
+
+    };
+    </script>
+</body>
+</html>
