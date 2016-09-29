@@ -28,7 +28,8 @@
         };
         var noteW = 40;
         var noteH = 20;
-        var playingTimeoutId;
+        var playingTimeoutIds = [];
+        var canClickNewSong = true;
 
         var drawBkrd = function () {
             if (canvas.getContext) {
@@ -89,18 +90,22 @@
         };
 
         var animate = function (notes) {
-            playingTimeoutId = setInterval(function () {
-                var note;
-                var getNewPosition = function (position) {
-                    return position - 0.01;
-                };
-                for (note in notes) {
-                    if (notes[note] !== undefined) {
-                        notes[note] = notes[note].map(getNewPosition);
+            var id = setInterval(function () {
+                if (playingTimeoutIds.indexOf(id) > -1) {
+                    var note;
+                    var getNewPosition = function (position) {
+                        return position - 0.01;
+                    };
+                    for (note in notes) {
+                        if (notes[note] !== undefined) {
+                            notes[note] = notes[note].map(getNewPosition);
+                        }
                     }
+                    drawNotes(notes);
                 }
-                drawNotes(notes);
             }, 12);
+            playingTimeoutIds.push(id);
+            return id;
         };
 
 
@@ -158,12 +163,11 @@
         };
 
         var playActualSong = function (file, notes) {
-            console.log('playActualSong');
-            animate(notes);
-            setTimeout(function () {
-                MIDI.Player.timeWarp = 1.2; // speed the song is played back
-                MIDI.Player.loadFile(file, MIDI.Player.start);
-
+            console.log('playActualSong', notes);
+            MIDI.Player.timeWarp = 1.2; // speed the song is played back
+            MIDI.Player.loadFile(file, function () {
+                canClickNewSong = true;
+                var timeoutId = animate(notes);
                 MIDI.setVolume(0, 127);
                 MIDI.setVolume(1, 127);
                 MIDI.setVolume(2, 127);
@@ -177,7 +181,14 @@
                     var velocity = data.velocity; // the velocity of the note
                     console.log(now, end, channel, message, note, velocity);
                 });
-            }, 3800);
+                setTimeout(function () {
+                    if (playingTimeoutIds.indexOf(timeoutId) > -1) {
+                        MIDI.Player.start();
+                    } else {
+                        MIDI.Player.stop();
+                    }
+                }, 3800);
+            });
         };
 
         var playSong = function (file) {
@@ -187,14 +198,20 @@
         };
 
         $('.play-song').click(function (e) {
-            if (playingTimeoutId) {
-                clearInterval(playingTimeoutId);
+            if (canClickNewSong) {
+                canClickNewSong = false;
+                if (playingTimeoutIds.length > 0) {
+                    playingTimeoutIds.forEach(function (playingTimeoutId) {
+                        clearInterval(playingTimeoutId);
+                    });
+                    playingTimeoutIds = [];
+                }
+                MIDI.Player.stop();
+                drawBkrd();
+                drawLines();
+                drawHitArea();
+                playSong('midi/' + $(e.currentTarget).data('song'));
             }
-            MIDI.Player.stop();
-            drawBkrd();
-            drawLines();
-            drawHitArea();
-            playSong('midi/' + $(e.currentTarget).data('song'));
         });
 
         drawBkrd();
