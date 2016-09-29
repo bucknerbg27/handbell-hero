@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns = "http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link type="text/css" href="css/mycss.css" rel="stylesheet">
+	<!-- polyfill -->
+	<script src="inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<script src="inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
+	<!-- jasmid package -->
+	<script src="inc/jasmid/stream.js"></script>
+	<script src="inc/jasmid/midifile.js"></script>
+	<script src="inc/jasmid/replayer.js"></script>
+	<!-- midi.js package -->
+	<script src="js/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="js/midi/gm.js" type="text/javascript"></script>
+	<script src="js/midi/loader.js" type="text/javascript"></script>
+	<script src="js/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="js/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="js/midi/plugin.webmidi.js" type="text/javascript"></script>
+	<script src="js/midi/player.js" type="text/javascript"></script>
+	<script src="js/midi/synesthesia.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="js/util/dom_request_script.js" type="text/javascript"></script>
+	<!-- includes -->
+	<script src="inc/timer.js" type="text/javascript"></script>
+	<script src="inc/colorspace.js" type="text/javascript"></script>
+	<script src="inc/event.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.js"></script>
+</head>
+<body style="margin: 0px; background: black;">
+	<div class="midi-container">
+		<canvas id="canvas" width="800px" height="1600px"></canvas>
+		<img class="holly-img" src="images/handbell-hero-holly-01.png"></img>
+		<img class="title-img" src="images/handbell-hero-01.png"></img>
+		<table>
+			<thead>
+				<th>Song Title</th>
+				<th></th>
+			</thead>
+			<!-- <tr>
+				<td>Angels We Have Heard</td>
+				<td><a href="#" class="play-song" data-song="Angels-We-Have-Heard.mid">Play</a></td>
+			</tr> -->
+			<tr>
+				<td>Deck the Halls</td>
+				<td><a href="#" class="play-song" data-song="Deck-The-Halls.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>Jingle Bells</td>
+				<td><a href="#" class="play-song" data-song="Jingle-Bells.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>Joy to the World</td>
+				<td><a href="#" class="play-song" data-song="Joy-To-The-World.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>Ode to Joy</td>
+				<td><a href="#" class="play-song" data-song="Ode-To-Joy.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>Super Christmas</td>
+				<td><a href="#" class="play-song" data-song="Super-Christmas.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>The First Noel</td>
+				<td><a href="#" class="play-song" data-song="The-First-Noel.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>Up On the House Top</td>
+				<td><a href="#" class="play-song" data-song="Up-On-The-House-Top.mid">Play</a></td>
+			</tr>
+			<tr>
+				<td>We Wish You a Merry Christmas</td>
+				<td><a href="#" class="play-song" data-song="We-Wish-You-A-Merry-Christmas.mid">Play</a></td>
+			</tr>
+		</table>
+	</div>
+	<script src="js/main.js"></script>
+</body>
+</html>

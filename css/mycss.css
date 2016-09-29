@@ -1,0 +1,49 @@
+#canvas {
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+}
+
+.midi-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #FFF;
+    overflow: hidden;
+}
+
+.midi-container a{
+    color: #FFF;
+}
+
+.midi-container .holly-img {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 770px;
+    height: 200px;
+}
+
+.midi-container .title-img {
+    position: absolute;
+    top: 20px;
+    left: 820px;
+    width: 300px;
+    height: 200px;
+}
+
+.midi-container table {
+    position: absolute;
+    bottom: 20px;
+    left: 820px;
+    width: 300px;
+    height: 200px;
+    background-color: #000;
+}
+
+.midi-container table {
+    border: 1px solid #FFF;
+}
+
+.midi-container table td {
+    border-bottom: 1px solid #FFF;
+}
