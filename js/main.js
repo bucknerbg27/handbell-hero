@@ -30,6 +30,17 @@
         var noteH = 20;
         var playingTimeoutIds = [];
         var canClickNewSong = true;
+        var loadingHtml = '<div id="loading" style="position: fixed; width: 100%; height: 100%;">' +
+            '<br><br><br><br><br><br><br><br><br>' +
+            '<h3 style="text-align: center;"><span style="background: white; color: black;">&nbsp;Loading...&nbsp;</span></h3>' +
+            '</div>';
+
+        var showLoading = function () {
+            $('body').append(loadingHtml);
+        };
+        var hideLoading = function () {
+            $('#loading').remove();
+        };
 
         var drawBkrd = function () {
             if (canvas.getContext) {
@@ -167,6 +178,7 @@
             MIDI.Player.timeWarp = 1.2; // speed the song is played back
             MIDI.Player.loadFile(file, function () {
                 canClickNewSong = true;
+                hideLoading();
                 var timeoutId = animate(notes);
                 MIDI.setVolume(0, 127);
                 MIDI.setVolume(1, 127);
@@ -187,7 +199,7 @@
                     } else {
                         MIDI.Player.stop();
                     }
-                }, 3800);
+                }, 3900);
             });
         };
 
@@ -200,6 +212,7 @@
         $('.play-song').click(function (e) {
             if (canClickNewSong) {
                 canClickNewSong = false;
+                showLoading();
                 if (playingTimeoutIds.length > 0) {
                     playingTimeoutIds.forEach(function (playingTimeoutId) {
                         clearInterval(playingTimeoutId);

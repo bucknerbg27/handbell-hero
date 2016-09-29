@@ -1,3 +1,7 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
 #canvas {
     border-left: 2px solid white;
     border-right: 2px solid white;
@@ -27,7 +31,7 @@
     position: absolute;
     top: 20px;
     left: 820px;
-    width: 300px;
+    width: 350px;
     height: 200px;
 }
 
@@ -35,7 +39,7 @@
     position: absolute;
     bottom: 20px;
     left: 820px;
-    width: 300px;
+    width: 350px;
     height: 200px;
     background-color: #000;
 }
