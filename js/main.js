@@ -28,6 +28,7 @@
         };
         var noteW = 40;
         var noteH = 20;
+        var volume = 127;
         var playingTimeoutIds = [];
         var canClickNewSong = true;
         var loadingHtml = '<div id="loading" style="position: fixed; width: 100%; height: 100%;">' +
@@ -180,10 +181,11 @@
                 canClickNewSong = true;
                 hideLoading();
                 var timeoutId = animate(notes);
-                MIDI.setVolume(0, 127);
-                MIDI.setVolume(1, 127);
-                MIDI.setVolume(2, 127);
-                MIDI.setVolume(3, 127);
+                MIDI.setVolume(0, volume);
+                MIDI.setVolume(1, volume);
+                MIDI.setVolume(2, volume);
+                MIDI.setVolume(3, volume);
+                console.log(MIDI.Player);
                 MIDI.Player.addListener(function (data) { // set it to your own function!
                     var now = data.now; // where we are now
                     var end = data.end; // time when song ends
@@ -226,6 +228,46 @@
                 playSong('midi/' + $(e.currentTarget).data('song'));
             }
         });
+
+        $('.mute').click(function (e) {
+            var link = $(e.currentTarget);
+            if (volume === 127) {
+                volume = 0;
+                link.empty().append('Stop and Unmute');
+            } else {
+                volume = 127;
+                link.empty().append('Stop and Mute');
+            }
+            if (window.localStorage) {
+                window.localStorage.setItem('volume', volume);
+            }
+            if (MIDI && MIDI.setVolume && MIDI.Player) {
+                MIDI.Player.stop();
+                playingTimeoutIds.forEach(function (playingTimeoutId) {
+                    clearInterval(playingTimeoutId);
+                });
+                playingTimeoutIds = [];
+                drawBkrd();
+                drawLines();
+                drawHitArea();
+                MIDI.setVolume(0, volume);
+                MIDI.setVolume(1, volume);
+                MIDI.setVolume(2, volume);
+                MIDI.setVolume(3, volume);
+            }
+        });
+
+        if (window.localStorage) {
+            var temp = parseInt(window.localStorage.getItem('volume'), 10);
+            if (temp === 0 || temp === 127) {
+                volume = temp;
+                $('.mute').empty().append('Stop and Unmute');
+            } else {
+                volume = 127;
+                $('.mute').empty().append('Stop and Mute');
+            }
+
+        }
 
         drawBkrd();
         drawLines();
